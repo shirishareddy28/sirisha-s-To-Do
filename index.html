@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sirisha's To-Do List</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    video#bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100vw;
+      min-height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      margin-top: 3rem;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-section {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.6rem;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 0.6rem 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #e0ffe0;
+      padding: 0.8rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    li.done {
+      text-decoration: line-through;
+      background: #d3d3d3;
+    }
+
+    li button {
+      margin-left: 8px;
+      font-size: 18px;
+      background: transparent;
+      color: #333;
+    }
+
+    li button:hover {
+      color: #000;
+      transform: scale(1.2);
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.95); }
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.2rem;
+      }
+
+      input {
+        font-size: 14px;
+      }
+
+      button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌟 Background Video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="https://videos.pexels.com/video-files/3832200/3832200-uhd_1440_2732_25fps.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- ✅ To-Do App Container -->
+  <div class="container">
+    <img src="https://images.pexels.com/photos/7718755/pexels-photo-7718755.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Logo" class="logo"/>
+    <h1>My To-Do List</h1>
+
+    <div class="input-section">
+      <input type="text" id="taskInput" placeholder="Enter a task..." />
+      <button id="addBtn">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+  <!-- 💻 JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const addBtn = document.getElementById("addBtn");
+      const taskInput = document.getElementById("taskInput");
+      const taskList = document.getElementById("taskList");
+
+      addBtn.addEventListener("click", () => {
+        const taskText = taskInput.value.trim();
+        if (taskText === "") {
+          alert("Please enter a task!");
+          return;
+        }
+
+        const li = document.createElement("li");
+
+        const span = document.createElement("span");
+        span.textContent = taskText;
+
+        const doneBtn = document.createElement("button");
+        doneBtn.textContent = "✔";
+        doneBtn.title = "Mark as done";
+        doneBtn.onclick = () => li.classList.toggle("done");
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "🗑";
+        deleteBtn.title = "Delete task";
+        deleteBtn.onclick = () => {
+          li.style.animation = "fadeOut 0.4s ease forwards";
+          setTimeout(() => li.remove(), 400);
+        };
+
+        li.appendChild(span);
+        li.appendChild(doneBtn);
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+        taskInput.value = "";
+      });
+
+      taskInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          addBtn.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
